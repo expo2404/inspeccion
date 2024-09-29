@@ -200,7 +200,5 @@ git push origin backend
 El uso de estas herramientas y recursos proporciona una base sólida para el desarrollo del backend del proyecto, facilitando la escalabilidad, la seguridad, y la colaboración entre desarrolladores. La combinación de Node.js, Express, Sequelize y MySQL ofrece un entorno flexible y eficiente para gestionar los datos de la aplicación.
 
 
----
 
-Con esta estructura y documentación, el proyecto es fácil de entender para otros colaboradores, y las tecnologías están bien justificadas para su uso en un entorno de desarrollo profesional.
 
