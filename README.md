@@ -57,7 +57,8 @@ Funcionalidad: Simplifica la gestión de datos y permite crear consultas SQL sin
 Descripción: Librería para la gestión de variables de entorno.
 
 Funcionalidad: Permite almacenar configuraciones sensibles como credenciales de la base de datos y claves API en un archivo .env, manteniendo la seguridad.
-
+3.7.Moment 
+Descripcion: LIbreria que sirve para analizar, validar, manipular y mostrar fechas y horas en JavaScript.
 
 4. Estructura de Carpetas
 
