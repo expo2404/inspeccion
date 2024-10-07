@@ -4,6 +4,8 @@ const app = express();
 const solicitudesRoutes=require('./routes/solicitudInspeccion')
 const personasRoutes = require('./routes/personas');
 const viviendasRoutes = require('./routes/viviendas');
+const authRoutes=require('./routes/auth')
+const loginRoutes=require('./routes/login')
 const sequelize = require('./config/database');
 
 // Middleware
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use('/api/solicitudInspeccion', solicitudesRoutes);
 app.use('/api/personas', personasRoutes);
 app.use('/api/viviendas', viviendasRoutes);
+app.use('/api/registrarse',authRoutes)
+app.use('/api/login',loginRoutes)
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()

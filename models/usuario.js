@@ -19,11 +19,19 @@ const Usuario=sequelize.define('Usuario',{
             isEmail:true
         }
     },
-    contrasenia:{
+    contraseña:{
         type:Sequelize.STRING,
         allowNull:false
     },
     rol:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    nombres:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    apellidos:{
         type:Sequelize.STRING,
         allowNull:false
     }
