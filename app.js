@@ -12,12 +12,13 @@ const sequelize = require('./config/database');
 app.use(cors());
 app.use(express.json());
 
+
 // Rutas
 app.use('/api/solicitudInspeccion', solicitudesRoutes);
 app.use('/api/personas', personasRoutes);
 app.use('/api/viviendas', viviendasRoutes);
-app.use('/api/registrarse',authRoutes)
-app.use('/api/login',loginRoutes)
+app.use('/api/registrarse',authRoutes);
+app.use('/api/login',loginRoutes);
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()

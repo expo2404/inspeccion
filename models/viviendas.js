@@ -31,6 +31,9 @@ const Viviendas=sequelize.define('Viviendas',{
             model:Personas,
             key:'id_persona'
         }
+    },numero_expediente: {
+        type: Sequelize.STRING,
+        allowNull:true
     }
     
 },{

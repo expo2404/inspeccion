@@ -1,7 +1,7 @@
 const {Sequelize}=require('sequelize');
 const sequelize=require('../config/database');
 const Usuario=require('./usuario');
-const Viviendas=require('./viviendas')
+const Viviendas=require('./viviendas');
 
 
 const SolicitudInspeccion=sequelize.define('SolicitudInspeccion',{
@@ -23,9 +23,6 @@ const SolicitudInspeccion=sequelize.define('SolicitudInspeccion',{
             model:Viviendas,
             key:'id_vivienda'
         }
-    },numero_expediente: {
-        type: Sequelize.STRING,
-        allowNull:true
     }, tipo_solicitud: {
         type: Sequelize.STRING,
         allowNull: false
@@ -43,6 +40,8 @@ const SolicitudInspeccion=sequelize.define('SolicitudInspeccion',{
     tableName: 'solicitudes_inspeccion', // Nombre de la tabla en la base de datos
     timestamps: false
 });
-Usuario.hasMany(SolicitudInspeccion, { foreignKey: 'id_usuario' });
-SolicitudInspeccion.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+Usuario.hasMany(SolicitudInspeccion, { foreignKey: 'id_sector' });
+SolicitudInspeccion.belongsTo(Usuario, { foreignKey: 'id_sector' });
+Viviendas.hasMany(SolicitudInspeccion,{foreignKey:'id_vivienda'});
+SolicitudInspeccion.belongsTo(Viviendas, { foreignKey: 'id_vivienda' });
 module.exports=SolicitudInspeccion

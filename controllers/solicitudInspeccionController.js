@@ -1,6 +1,8 @@
 const solicitud = require('../models/solicitudInspeccion');
 var personas=require('../models/personas');
-var viviendas=require('../models/viviendas')
+var viviendas=require('../models/viviendas');
+const Usuario = require('../models/usuario');
+const SolicitudInspeccion = require('../models/solicitudInspeccion');
 
 // Obtener todas las solicitudes
 const solicitudesInspeccion = async (req, res) => {
@@ -12,33 +14,15 @@ const solicitudesInspeccion = async (req, res) => {
     }
 };
 
-// Crear una nueva solicitud
-// exports.createSolicitud = async (req, res) => {
-//     try {
-//         console.log(req.body)
-        
-//         var buscarViviendas=[]
-//         buscarViviendas=await viviendas.findAll()
-      
-//      if (buscarViviendas.length==0) {
-//         var nuevaPersona=await personas.create()
-//         const nuevaSolicitud = await solicitud.create(req.body);
-//         res.status(201).json(nuevaSolicitud);
-//         console.log('vaciono hay datos')
-//      }
-        
-//     } catch (error) {
-//         res.status(500).json({ error: 'Error al crear la solicitud' });
-//         console.log(error)
-//     }
-// };
+
 const crearSolicitudInspeccion = async (req, res) => {
-  const { nombre, apellido, telefono, email, barrio, sector, manzana, lote,fechaSolicitud,estado,numeroExpediente,tipo_Solicitud } = req.body;
+  const { nombre, apellido, telefono, email, barrio, sector, manzana, lote,fechaSolicitud,estado,numero_expediente,tipo_solicitud } = req.body;
 
   try {
     // 1. Buscar si ya existe una vivienda con los datos proporcionados
     const viviendaExistente = await viviendas.findOne({
       where: {
+        numero_expediente:numero_expediente,
         barrio: barrio,
         sector: sector,
         manzana: manzana,
@@ -48,14 +32,13 @@ const crearSolicitudInspeccion = async (req, res) => {
     });
 
     if (viviendaExistente!=null) {
-        console.log(tipo_Solicitud)
+       
       // Si la vivienda ya existe, retornamos el registro
       const nuevaSolicitud = await solicitud.create({
         fecha_solicitud: fechaSolicitud,
         estado: estado,
         id_vivienda: viviendaExistente.id_vivienda,
-        numero_expediente: numeroExpediente,
-        tipo_solicitud: tipo_Solicitud,
+        tipo_solicitud: tipo_solicitud,
         id_sector:1
       });
       return res.status(200).json({ message: 'La vivienda ya está registrada', vivienda: viviendaExistente });
@@ -77,14 +60,14 @@ const crearSolicitudInspeccion = async (req, res) => {
         sector: sector,
         manzana: manzana,
         lote: lote,
-        id_persona: nuevaPersona.dataValues.id_persona // Relacionamos la vivienda con la persona recién creada
+        id_persona: nuevaPersona.dataValues.id_persona, // Relacionamos la vivienda con la persona recién creada
+        numero_expediente:numero_expediente
       });
       const nuevaSolicitud = await solicitud.create({
         fecha_solicitud: fechaSolicitud,
         estado: estado,
         id_vivienda: nuevaVivienda.dataValues.id_vivienda,
-        numero_expediente: numeroExpediente,
-        tipo_solicitud: tipo_Solicitud,
+        tipo_solicitud: tipo_solicitud,
         id_sector:1
       });
       return res.status(201).json({
@@ -99,9 +82,76 @@ const crearSolicitudInspeccion = async (req, res) => {
   }
 };
 
+
+ // ELIMINA LA SOLICITUD
+
+const EliminarSolicitud= async (req,res) => {
+  const {id_solicitud}=req.body
+  try {
+    // busca si existe algun registro con el id
+    const encontrarSolicitud = await solicitud.findOne({
+      where: { id_solicitud:id_solicitud },
+      include: [{Usuario}],
+      include: [
+        {
+            model:viviendas, 
+            include: { model: personas } // Relación indirecta con Persona a través de Vivienda
+        }
+    ]
+   
+    
+  });
+  if (!encontrarSolicitud) {
+       res.status(400).json({message:'no se ha encontrado registro'})
+  }else{
+    await encontrarSolicitud.destroy();
+    res.json({ message: 'Solicitud de inspección eliminada correctamente.' });
+   
+  }
+ 
+ 
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Error al eliminar la solicitud de inspección' });
+  }
+}
+
+// ACTUALIZA LA SOLICITUD
+
+const actualizarInspeccion=async (req,res) => {
+  const{idSolicitud,fechaSolicitud}=req.body
+  
+  try {
+    // busca si existe algun registro con el id 
+    const encontrarSolicitud=await solicitud.findOne({
+      where:{id_solicitud:idSolicitud},
+      include: [{model:Usuario}],
+      include:[
+        {
+          model:viviendas,
+          include:[{model:personas}]
+        }
+      ]
+    })
+    console.log(encontrarSolicitud)
+    if (!encontrarSolicitud) {
+      res.status(400).json({message:'no se ha encontrado registro'})
+    }else{
+      SolicitudInspeccion.fecha_solicitud=fechaSolicitud
+      await solicitud.save()
+      res.json({ message: 'Solicitud de inspección actualizada correctamente.' });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Error al actualizar la solicitud de inspección' });
+  }
+}
 module.exports = {
   crearSolicitudInspeccion,
-  solicitudesInspeccion
+  solicitudesInspeccion,
+  EliminarSolicitud,
+  actualizarInspeccion
+
 };
 
 

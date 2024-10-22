@@ -57,6 +57,7 @@ Funcionalidad: Simplifica la gestión de datos y permite crear consultas SQL sin
 Descripción: Librería para la gestión de variables de entorno.
 
 Funcionalidad: Permite almacenar configuraciones sensibles como credenciales de la base de datos y claves API en un archivo .env, manteniendo la seguridad.
+
 3.7.Moment 
 Descripcion: LIbreria que sirve para analizar, validar, manipular y mostrar fechas y horas en JavaScript.
 
@@ -68,12 +69,15 @@ Descripcion: LIbreria que sirve para analizar, validar, manipular y mostrar fech
 │   └── database.js (configuración de la conexión a la base de datos)
 │
 ├── /controllers
-│   └── solicitudesController.js (controlador para manejar las solicitudes)
+│   |── solicitudesController.js (controlador para manejar las solicitudes)
+|   |──authControllerController.js (controlador para manejar registro usuario)
+|
 │
 ├── /models
 │   ├── Usuario.js
 │   ├── Persona.js
-│   └── SolicitudInspeccion.js (modelos definidos con Sequelize)
+│   |── SolicitudInspeccion.js (modelos definidos con Sequelize)
+|   ├── Viviendas.js
 │
 ├── /routes
 │   └── solicitudes.js (rutas para gestionar las solicitudes)
