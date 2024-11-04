@@ -86,7 +86,8 @@ const crearSolicitudInspeccion = async (req, res) => {
  // ELIMINA LA SOLICITUD
 
 const EliminarSolicitud= async (req,res) => {
-  const {id_solicitud}=req.body
+  var id_solicitud=req.params.id
+  console.log(id_solicitud)
   try {
     // busca si existe algun registro con el id
     const encontrarSolicitud = await solicitud.findOne({

@@ -34,6 +34,10 @@ const Usuario=sequelize.define('Usuario',{
     apellidos:{
         type:Sequelize.STRING,
         allowNull:false
+    },
+    fecha_creacion:{
+        type:Sequelize.DATE,
+        allowNull:false
     }
 
 },{

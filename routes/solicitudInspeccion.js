@@ -10,7 +10,7 @@ router.get('/',authMiddleware, solicitudInspeccion.solicitudesInspeccion);
 router.post('/',authMiddleware, solicitudInspeccion.crearSolicitudInspeccion);
 
 // eliminar una solicitud
-router.delete('/',authMiddleware,solicitudInspeccion.EliminarSolicitud)
+router.delete('/:id',authMiddleware,solicitudInspeccion.EliminarSolicitud)
 
 // actualizar una inspeccion
 router.put('/',authMiddleware,solicitudInspeccion.actualizarInspeccion)
