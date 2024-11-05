@@ -7,7 +7,8 @@ const solicitudInspeccion = require('../controllers/solicitudInspeccionControlle
 router.get('/',authMiddleware, solicitudInspeccion.solicitudesInspeccion);
 
 // Crear una nueva persona
-router.post('/',authMiddleware, solicitudInspeccion.crearSolicitudInspeccion);
+// router.post('/',authMiddleware, solicitudInspeccion.crearSolicitudInspeccion);
+router.post('/', solicitudInspeccion.crearSolicitudInspeccion);
 
 // eliminar una solicitud
 router.delete('/',authMiddleware,solicitudInspeccion.EliminarSolicitud)
