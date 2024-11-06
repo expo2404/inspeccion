@@ -61,8 +61,12 @@ const generarPdf = async (req, res) => {
 
                 if(dataGet.document_card.status ==="success"){
                     return res.status(200).json (dataGet.document_card.download_url);//Devuelve el link de descarga
+                }else
+                    if (dataGet.document_card.status ==="failure"){
+                        return res.status(404).json({message:'Error al generar el documento'});
                 }
             }
+            return res.status(404).json({message:'Documento puede tardar en generarse. Intenta mas tarde'});
         } catch (error){
             console.error('Error al intentar llamar API PDF', error);
             res.status(500).json({message: 'Error al intentar llamar API PDF'})
