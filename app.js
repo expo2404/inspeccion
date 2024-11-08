@@ -7,6 +7,8 @@ const viviendasRoutes = require('./routes/viviendas');
 const authRoutes=require('./routes/auth')
 const loginRoutes=require('./routes/login')
 const sequelize = require('./config/database');
+const dptoRutes = require('./routes/departamentos.js');
+
 
 // Middleware
 app.use(cors());
@@ -19,6 +21,7 @@ app.use('/api/personas', personasRoutes);
 app.use('/api/viviendas', viviendasRoutes);
 app.use('/api/registrarse',authRoutes);
 app.use('/api/login',loginRoutes);
+app.use('/api/departamentos',dptoRutes);
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()
