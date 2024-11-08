@@ -28,3 +28,46 @@ sequelize.sync()
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+
+const soap = require('soap');
+
+const Vivienda = require('./models/viviendas');
+const { Console } = require('console');
+
+// Define el servicio y el método ObtenerVivienda
+const servicioVivienda = {
+    ViviendaService: {
+        ViviendaPort: {
+            ObtenerVivienda: async function(args) {
+                const viviendaId = args.id;
+                console.log(viviendaId);
+                try {
+                    const vivienda = await Vivienda.findByPk(viviendaId);
+                    if (vivienda) {
+                        return {
+                            id: vivienda.id,
+                            barrio: vivienda.barrio,
+                            manzana: vivienda.manzana,
+                            lote: vivienda.lote,
+                            numero_expediente:vivienda.numero_expediente
+                        };
+                    } else {
+                        return { mensaje: "Vivienda no encontrada" };
+                    }
+                } catch (error) {
+                    console.error(error);
+                    return { mensaje: "Error en la consulta" };
+                }
+            }
+        }
+    }
+};
+
+// WSDL
+const xml = require('fs').readFileSync('./service/viviendaService.wsdl', 'utf8');
+
+app.listen(8001, function () {
+    soap.listen(app, '/viviendaService', servicioVivienda, xml, function() {
+        console.log('Servicio SOAP en funcionamiento en http://localhost:8001/viviendaService?wsdl');
+    });
+});
