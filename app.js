@@ -6,6 +6,7 @@ const personasRoutes = require('./routes/personas');
 const viviendasRoutes = require('./routes/viviendas');
 const authRoutes=require('./routes/auth')
 const loginRoutes=require('./routes/login')
+const soapRoutes=require('./routes/soap')
 const sequelize = require('./config/database');
 
 // Middleware
@@ -19,6 +20,7 @@ app.use('/api/personas', personasRoutes);
 app.use('/api/viviendas', viviendasRoutes);
 app.use('/api/registrarse',authRoutes);
 app.use('/api/login',loginRoutes);
+app.use('/api/soap', soapRoutes);
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()
@@ -29,12 +31,17 @@ sequelize.sync()
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
 
+
+
+//       Servidor  SOAP
+//      -----------------
+
 const soap = require('soap');
 
 const Vivienda = require('./models/viviendas');
 const { Console } = require('console');
 
-// Define el servicio y el método ObtenerVivienda
+// Define el servicio y el método ObtenerVivienda y ObtenerListadoViviendas
 const servicioVivienda = {
     ViviendaService: {
         ViviendaPort: {
@@ -45,7 +52,7 @@ const servicioVivienda = {
                     const vivienda = await Vivienda.findByPk(viviendaId);
                     if (vivienda) {
                         return {
-                            id: vivienda.id,
+                            id: vivienda.id_vivienda,
                             barrio: vivienda.barrio,
                             manzana: vivienda.manzana,
                             lote: vivienda.lote,
@@ -57,6 +64,23 @@ const servicioVivienda = {
                 } catch (error) {
                     console.error(error);
                     return { mensaje: "Error en la consulta" };
+                }
+            },
+
+            ObtenerListadoViviendas: async function() {
+                try {
+                    const viviendas = await Vivienda.findAll();
+
+                    const listado = viviendas.map(vivienda => ({
+                        id: vivienda.id_vivienda,
+                        expediente: vivienda.numero_expediente
+                    }));
+
+                    return { listado };
+
+                } catch (error) {
+                    console.error(error);
+                    return { listado: JSON.stringify([{ mensaje: "Error en la consulta" }]) };
                 }
             }
         }
