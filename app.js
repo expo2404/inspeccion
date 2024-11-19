@@ -7,7 +7,7 @@ const viviendasRoutes = require('./routes/viviendas');
 const authRoutes=require('./routes/auth')
 const loginRoutes=require('./routes/login')
 const filtroBusqueda=require('./routes/filtroBusqueda')
-const soapRoutes=require('./routes/soap')
+
 const sequelize = require('./config/database');
 
 // Middleware
