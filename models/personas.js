@@ -30,4 +30,6 @@ const Persona =sequelize.define('Persona', {
     timestamps: false
 });
 
+
+
 module.exports=Persona

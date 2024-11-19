@@ -30,6 +30,7 @@ const crearSolicitudInspeccion = async (req, res) => {
       },
       include: personas
     });
+    console.log(viviendaExistente)
 
     if (viviendaExistente!=null) {
        
@@ -153,6 +154,62 @@ module.exports = {
   actualizarInspeccion
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const { SolicitudInspeccion, Vivienda, Persona, Inspeccion } = require('../models');
+// const path = require('path');
+
+// // Controlador para crear una nueva solicitud de inspección con archivos
+// exports.crearSolicitudInspeccion = async (req, res) => {
+//     try {
+//         const { viviendaId, personaId, descripcion } = req.body;
+//         const { archivoSolicitud, fotoVivienda, formularioInspeccion } = req.files;
+
+//         // Guardar los archivos en las rutas adecuadas
+//         const nuevaSolicitud = await SolicitudInspeccion.create({
+//             viviendaId,
+//             personaId,
+//             descripcion,
+//             archivoSolicitud: archivoSolicitud[0].path,
+//             fotoVivienda: fotoVivienda[0].path,
+//             formularioInspeccion: formularioInspeccion[0].path,
+//         });
+
+//         res.status(201).json({ message: 'Solicitud de inspección creada exitosamente', solicitud: nuevaSolicitud });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Error al crear la solicitud de inspección' });
+//     }
+// };
+
 
 
 

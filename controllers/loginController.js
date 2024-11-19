@@ -6,7 +6,9 @@ const Usuario = require('../models/usuario'); // tu modelo de usuarios
 
 // login usuario
 const loginUsuario = async (req, res) => {
-    const {email, contraseña} = req.body;
+    const {email, contrasenia} = req.body;
+    console.log(req.body)
+
     
 
     try {
@@ -21,7 +23,7 @@ const loginUsuario = async (req, res) => {
             const password=user.dataValues.contraseña
             
           
-            var resultado=await bcrypt.compare(contraseña,password)
+            var resultado=await bcrypt.compare(contrasenia,password)
             
             if (resultado) {
 

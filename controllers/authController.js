@@ -4,7 +4,9 @@ const moment=require('moment')
 
 // Registro de nuevo usuario
 const registrarUsuario = async (req, res) => {
-    const {nombres,apellidos,email, contraseña,nombre_usuario,rol} = req.body;
+    console.log(req.body)
+    const {nombres,apellidos,email, contrasenia,nombre_usuario,rol} = req.body;
+    
 
     try {
         // Verificar si el usuario ya existe
@@ -15,7 +17,7 @@ const registrarUsuario = async (req, res) => {
 
         // Encriptar contraseña
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(contraseña, salt);
+        const hashedPassword = await bcrypt.hash(contrasenia, salt);
         const fechaActual=moment().locale('en-ca').format('L');
         
 

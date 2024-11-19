@@ -6,6 +6,7 @@ const personasRoutes = require('./routes/personas');
 const viviendasRoutes = require('./routes/viviendas');
 const authRoutes=require('./routes/auth')
 const loginRoutes=require('./routes/login')
+const filtroBusqueda=require('./routes/filtroBusqueda')
 const sequelize = require('./config/database');
 
 // Middleware
@@ -19,6 +20,7 @@ app.use('/api/personas', personasRoutes);
 app.use('/api/viviendas', viviendasRoutes);
 app.use('/api/registrarse',authRoutes);
 app.use('/api/login',loginRoutes);
+app.use('/api/filtroBusqueda',filtroBusqueda)
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()
@@ -28,3 +30,10 @@ sequelize.sync()
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+
+
+
+
+
+
+
