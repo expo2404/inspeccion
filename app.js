@@ -6,6 +6,7 @@ const personasRoutes = require('./routes/personas');
 const viviendasRoutes = require('./routes/viviendas');
 const authRoutes=require('./routes/auth')
 const loginRoutes=require('./routes/login')
+const filtroBusqueda=require('./routes/filtroBusqueda')
 const soapRoutes=require('./routes/soap')
 const sequelize = require('./config/database');
 
@@ -20,7 +21,7 @@ app.use('/api/personas', personasRoutes);
 app.use('/api/viviendas', viviendasRoutes);
 app.use('/api/registrarse',authRoutes);
 app.use('/api/login',loginRoutes);
-app.use('/api/soap', soapRoutes);
+app.use('/api/filtroBusqueda',filtroBusqueda)
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()
@@ -33,65 +34,7 @@ app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
 
 
 
-//       Servidor  SOAP
-//      -----------------
 
-const soap = require('soap');
 
-const Vivienda = require('./models/viviendas');
-const { Console } = require('console');
 
-// Define el servicio y el método ObtenerVivienda y ObtenerListadoViviendas
-const servicioVivienda = {
-    ViviendaService: {
-        ViviendaPort: {
-            ObtenerVivienda: async function(args) {
-                const viviendaId = args.id;
-                console.log(viviendaId);
-                try {
-                    const vivienda = await Vivienda.findByPk(viviendaId);
-                    if (vivienda) {
-                        return {
-                            id: vivienda.id_vivienda,
-                            barrio: vivienda.barrio,
-                            manzana: vivienda.manzana,
-                            lote: vivienda.lote,
-                            numero_expediente:vivienda.numero_expediente
-                        };
-                    } else {
-                        return { mensaje: "Vivienda no encontrada" };
-                    }
-                } catch (error) {
-                    console.error(error);
-                    return { mensaje: "Error en la consulta" };
-                }
-            },
 
-            ObtenerListadoViviendas: async function() {
-                try {
-                    const viviendas = await Vivienda.findAll();
-
-                    const listado = viviendas.map(vivienda => ({
-                        id: vivienda.id_vivienda,
-                        expediente: vivienda.numero_expediente
-                    }));
-
-                    return { listado };
-
-                } catch (error) {
-                    console.error(error);
-                    return { listado: JSON.stringify([{ mensaje: "Error en la consulta" }]) };
-                }
-            }
-        }
-    }
-};
-
-// WSDL
-const xml = require('fs').readFileSync('./service/viviendaService.wsdl', 'utf8');
-
-app.listen(8001, function () {
-    soap.listen(app, '/viviendaService', servicioVivienda, xml, function() {
-        console.log('Servicio SOAP en funcionamiento en http://localhost:8001/viviendaService?wsdl');
-    });
-});
