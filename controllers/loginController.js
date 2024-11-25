@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Usuario = require('../models/usuario'); // tu modelo de usuarios
+const Rol = require('../models/rol'); // tu modelo de rol
 
 
 // login usuario
@@ -11,8 +12,7 @@ const loginUsuario = async (req, res) => {
 
     try {
         // Verificar si el usuario esta logeado
-        let user = await Usuario.findOne({ where: { email } });
-        
+        let user = await Usuario.findOne({ where: { email },include: [{ model: Rol, as: 'roles' }] });
         
 
         if (user!=null ) {
