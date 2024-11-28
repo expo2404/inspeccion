@@ -41,3 +41,23 @@ exports.asignarInspector = async (req, res) => {
       res.status(500).json({ message: 'Error al asignar inspector' });
     }
 }
+
+
+exports.verificarAccesoInspector = async (req, res) => {
+  const { id_solicitud, id_inspector } = req.params;
+
+  try {
+    const solicitud = await SolicitudInspeccion.findOne({
+      where: { id_solicitud, id_inspector },
+    });
+
+    if (solicitud) {
+      return res.status(200).json(true); // Tiene acceso
+    } else {
+      return res.status(200).json(false); // No tiene acceso
+    }
+  } catch (error) {
+    console.error('Error al verificar acceso:', error);
+    res.status(500).json({ message: 'Error interno' });
+  }
+};

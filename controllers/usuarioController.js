@@ -16,7 +16,6 @@ exports.verficaUsuarios = async (req, res) => {
 
 exports.obtenerInspectorPorSolicitud = async (req, res) => {
   const { id_solicitud } = req.params;
-  console.log("hola  "+req.params);
 
   try {
     // Buscar la solicitud con el inspector asociado
