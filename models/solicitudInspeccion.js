@@ -32,16 +32,27 @@ const SolicitudInspeccion=sequelize.define('SolicitudInspeccion',{
             model:Usuario,
             key:'id_usuario'
         }
+    },
+    id_inspector: { // Nuevo campo
+        type: Sequelize.INTEGER,
+        references: {
+            model: Usuario,
+            key: 'id_usuario'
+        }
     }
-    
-    
-
-},{
+}, {
     tableName: 'solicitudes_inspeccion', // Nombre de la tabla en la base de datos
     timestamps: false
 });
+
+// Relaciones
 Usuario.hasMany(SolicitudInspeccion, { foreignKey: 'id_sector' });
 SolicitudInspeccion.belongsTo(Usuario, { foreignKey: 'id_sector' });
-Viviendas.hasMany(SolicitudInspeccion,{foreignKey:'id_vivienda'});
+
+Usuario.hasMany(SolicitudInspeccion, { foreignKey: 'id_inspector' }); // Relación nueva
+SolicitudInspeccion.belongsTo(Usuario, { foreignKey: 'id_inspector' }); // Relación nueva
+
+Viviendas.hasMany(SolicitudInspeccion, { foreignKey: 'id_vivienda' });
 SolicitudInspeccion.belongsTo(Viviendas, { foreignKey: 'id_vivienda' });
-module.exports=SolicitudInspeccion
+
+module.exports = SolicitudInspeccion;

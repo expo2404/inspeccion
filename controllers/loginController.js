@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Usuario = require('../models/usuario'); // tu modelo de usuarios
+const Rol = require('../models/rol'); // tu modelo de rol
 
 
 // login usuario
@@ -11,8 +12,7 @@ const loginUsuario = async (req, res) => {
 
     try {
         // Verificar si el usuario esta logeado
-        let user = await Usuario.findOne({ where: { email } });
-        
+        let user = await Usuario.findOne({ where: { email },include: [{ model: Rol, as: 'roles' }] });
         
 
         if (user!=null ) {
@@ -26,7 +26,7 @@ const loginUsuario = async (req, res) => {
             if (resultado) {
 
                 const token = jwt.sign(
-                    { id: user.dataValues.id_usuario, email: user.dataValues.email },  // Información contenida en el token
+                    { usuario: user, id: user.dataValues.id_usuario, email: user.dataValues.email },  // Información contenida en el token
                     process.env.JWT_SECRET,              // Clave secreta para firmar el token
                     { expiresIn: '1h' }                  // Tiempo de expiración del token
                 );

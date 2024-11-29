@@ -2,3 +2,5 @@
 /.env
 /package-lock.json
 /package.json
+config/config.json
+models/index.js

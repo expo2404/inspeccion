@@ -3,6 +3,7 @@ var personas=require('../models/personas');
 var viviendas=require('../models/viviendas');
 const Usuario = require('../models/usuario');
 const SolicitudInspeccion = require('../models/solicitudInspeccion');
+const Viviendas = require('../models/viviendas');
 
 // Obtener todas las solicitudes
 const solicitudesInspeccion = async (req, res) => {
@@ -15,8 +16,43 @@ const solicitudesInspeccion = async (req, res) => {
 };
 
 
+const verSolicitudeInspeccion = async (req, res) => {
+  var id_solicitud=req.params.id
+  try {
+      const solicitud = await SolicitudInspeccion.findOne({
+        where: {
+          id_solicitud: id_solicitud
+        }
+      })
+
+      if (solicitud!=null){
+        try{
+        const viviendaConPersona = await Viviendas.findOne({
+          where: {
+            id_vivienda:solicitud.id_vivienda
+          },
+          include: personas
+        });        
+        if (viviendaConPersona!=null){
+          return res.status(200).json({solicitud,viviendaConPersona});
+        }else{
+          return res.status(200).json(solicitud);        }
+        
+      } catch {error}{
+        return res.status(500).json({ error: 'Error al intentar buscar vivienda' });
+      }
+      }else{
+        return res.status(404).json({ error: 'Solicitud vacia' });
+      }
+      
+      
+  } catch (error) {
+    return res.status(500).json({ error: 'Error al intentar buscar solicitud' });
+  }
+};
+
 const crearSolicitudInspeccion = async (req, res) => {
-  const { nombre, apellido, telefono, email, barrio, sector, manzana, lote,fechaSolicitud,estado,numero_expediente,tipo_solicitud } = req.body;
+  const { nombre, apellido, telefono, email, barrio, sector, manzana, lote,fechaSolicitud,estado,numero_expediente,tipo_solicitud, id_sector } = req.body;
 
   try {
     // 1. Buscar si ya existe una vivienda con los datos proporcionados
@@ -68,10 +104,11 @@ const crearSolicitudInspeccion = async (req, res) => {
         estado: estado,
         id_vivienda: nuevaVivienda.dataValues.id_vivienda,
         tipo_solicitud: tipo_solicitud,
-        id_sector:1
+        id_sector:id_sector
       });
       return res.status(201).json({
         message: 'Vivienda y persona registradas correctamente',
+        id_solicitud: nuevaSolicitud.dataValues.id_solicitud,
         vivienda: nuevaVivienda,
         persona: nuevaPersona
       });
@@ -151,8 +188,8 @@ module.exports = {
   crearSolicitudInspeccion,
   solicitudesInspeccion,
   EliminarSolicitud,
-  actualizarInspeccion
-
+  actualizarInspeccion,
+  verSolicitudeInspeccion
 };
 
 
