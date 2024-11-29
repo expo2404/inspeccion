@@ -8,6 +8,8 @@ const authRoutes=require('./routes/auth')
 const loginRoutes=require('./routes/login')
 const filtroBusqueda=require('./routes/filtroBusqueda')
 
+const usuariosRoutes=require('./routes/usuarios.js')
+const inspectoresRoutes=require('./routes/inspectores.js')
 const sequelize = require('./config/database');
 
 // Middleware
@@ -22,6 +24,8 @@ app.use('/api/viviendas', viviendasRoutes);
 app.use('/api/registrarse',authRoutes);
 app.use('/api/login',loginRoutes);
 app.use('/api/filtroBusqueda',filtroBusqueda)
+app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/inspectores', inspectoresRoutes);
 
 // Conectar a la base de datos y sincronizar modelos
 sequelize.sync()

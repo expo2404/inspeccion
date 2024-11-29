@@ -2,14 +2,14 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();  // Cargar variables de entorno desde .env
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization').substring(7);
+  const authHeader = req.header('Authorization'); // Obtener el encabezado Authorization
   
-
   // Verificar si no hay token
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'Acceso denegado. No se encontró el token.' });
   }
 
+  const token = authHeader.substring(7); // Extraer el token eliminando "Bearer "
   try {
     // Verificar y decodificar el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
